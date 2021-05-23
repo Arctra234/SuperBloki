@@ -1,0 +1,18 @@
+﻿@using SuperBloki.WebUI.Models
+@using SuperBloki.WebUI.HtmlHelpers
+@model ConstructorsListViewModel
+
+@{
+    ViewBag.Title = "Towar";
+}
+
+@foreach (var p in @Model.Constructors)
+{
+    @Html.Partial("ConstructorSummary", p)
+
+}
+
+<div class="btn-group pull-right">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("List",
+        new { page = x, producer = Model.CurrentProducer }))
+</div>

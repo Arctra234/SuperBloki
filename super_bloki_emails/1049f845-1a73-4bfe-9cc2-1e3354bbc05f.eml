@@ -1,0 +1,15 @@
+X-Sender: superbloki@example.com
+X-Receiver: orders@example.com
+MIME-Version: 1.0
+From: superbloki@example.com
+To: orders@example.com
+Date: 23 May 2021 18:25:41 +0200
+Subject: =?utf-8?B?V3lzxYJhbm8gbm93ZSB6YW3Ds3dpZW5pZSE=?=
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+
+Tm93ZSB6YW3Ds3dpZW5pZSB6b3N0YcWCbyBwcnpldHdvcnpvbmUNCi0tLQ0KVG93YXJ5
+Og0KMSB4IFBsYWMgemFiYXcgKHJhemVtOiAxMDksOTAg4oK9Q2HFgmtvd2l0eSBrb3N6
+dDogMTA5LDkwIOKCvS0tLQ0KRG9zdGF3YToNCkFsZXNrYW5kciBTa2FjaGtvdg0KTm93
+b2xpcGtpDQoyN0QNCk5vd29saXBraQ0KV2Fyc3phd2ENCtCf0L7Qu9GM0YjQsA0KLS0t
+DQpQYXBpZXIgb3pkb2JueTogTmll

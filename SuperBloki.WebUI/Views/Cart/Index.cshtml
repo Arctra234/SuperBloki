@@ -1,0 +1,59 @@
+﻿@model SuperBloki.WebUI.Models.CartIndexViewModel
+
+@{
+    ViewBag.Title = "SuperBloki: twój koszyk";
+}
+
+<style>
+    #cartTable td {
+        vertical-align: middle;
+    }
+</style>
+
+
+<h2>Twój koszyk</h2>
+<table id="cartTable" class="table">
+    <thead>
+        <tr>
+            <th>Ilość</th>
+            <th>Klocki</th>
+            <th class="text-right">Cena</th>
+            <th class="text-right">Cena całkowita</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var line in Model.Cart.Lines)
+        {
+            <tr>
+                <td class="text-center">@line.Quantity</td>
+                <td class="text-left">@line.Constructor.Name</td>
+                <td class="text-right">@line.Constructor.Priсe.ToString("# zł")</td>
+                <td class="text-right">
+                    @((line.Quantity * line.Constructor.Priсe).ToString("# zł"))
+                </td>
+                <td>
+                    @using (Html.BeginForm("RemoveFromCart", "Cart"))
+                    {
+                        @Html.Hidden("ConstructorId", line.Constructor.ConstructorID)
+                        @Html.HiddenFor(x => x.ReturnUrl)
+                        <input class="btn btn-sm btn-warning" type="submit" value="Usuń" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" class="text-right">Razem:</td>
+            <td class="text-right">
+                @Model.Cart.ComputeTotalValue().ToString("# zł")
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<div class="text-center">
+    <a class="btn btn-primary" href="@Model.ReturnUrl">Kontynuować zakupy</a>
+    @Html.ActionLink("Zloź zamówienie", "Checkout", null, new { @class = "btn btn-primary" })
+</div>
+

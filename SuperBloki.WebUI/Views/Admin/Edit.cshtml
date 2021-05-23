@@ -1,0 +1,72 @@
+﻿@model SuperBloki.Domain.Entities.Constructor
+
+@{
+    ViewBag.Title = "Panel administracyjny: edycja produktu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    HtmlHelper.ClientValidationEnabled = false;
+    HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+}
+
+<div class="panel">
+    <div class="panel-heading">
+        <h3>Edycja klocków «@Model.ConstructorNumber @Model.Name @Model.Producer»</h3>
+    </div>
+
+    @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="panel-body">
+            @Html.HiddenFor(m => m.ConstructorID)
+            @foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                switch (property.PropertyName)
+                {
+                    case "ConstructorID":
+                    case "ImageData":
+                    case "ImageMimeType":
+                        break;
+                    default:
+                        <div class="form-group">
+                            <label>@(property.DisplayName ?? property.PropertyName)</label>
+
+                            @Html.TextBox(property.PropertyName, null,
+                                new { @class = "form-control" })
+
+                            @Html.ValidationMessage(property.PropertyName)
+                        </div>
+                        break;
+                }
+            }
+            <div class="form-group">
+                <div style="position:relative;">
+                    <label>Obrazek</label>
+                    <a class='btn' href='javascript:;'>
+                        Wybierz plik...
+                        <input type="file" name="Image" size="40"
+                               style="position:absolute;z-index:2;top:0;
+                                left:0;filter: alpha(opacity=0); opacity:0;
+                                background-color:transparent;color:transparent;"
+                               onchange='$("#upload-file-info").html($(this).val());'>
+                    </a>
+                    <span class='label label-info' id="upload-file-info"></span>
+                </div>
+                @if (Model.ImageData == null)
+                {
+                <div class="form-control-static">Brak obrazka</div>
+                }
+                else
+                {
+                    <img class="img-thumbnail" width="150" height="150"
+                         src="@Url.Action("GetImage", "Constructor",
+                        new { Model.ConstructorID })" />
+                }
+            </div>
+        </div>
+        <div class="panel-footer">
+            <input type="submit" value="Zapisać" class="btn btn-primary" />
+            @Html.ActionLink("Odrzuć zmiany i wróć do listy", "Index", null, new
+            {
+                @class = "btn btn-default"
+            })
+        </div>
+    }
+</div>

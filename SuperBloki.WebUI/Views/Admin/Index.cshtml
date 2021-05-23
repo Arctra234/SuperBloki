@@ -1,0 +1,44 @@
+﻿@model IEnumerable<SuperBloki.Domain.Entities.Constructor>
+
+@{
+    ViewBag.Title = "Panel administracyjny: lista produktów";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3>Lista klockow</h3>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-condensed table-bordered">
+            <tr>
+                <th class="text-right">ID</th>
+                <th>Nazwa</th>
+                <th class="text-right">Cena</th>
+                <th class="text-center">Działania</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-right">@item.ConstructorID</td>
+                    <td>@Html.ActionLink(item.Name, "Edit", new { item.ConstructorID })</td>
+                    <td class="text-right">@item.Priсe.ToString("# zł")</td>
+                    <td class="text-center">
+                        @using (Html.BeginForm("Delete", "Admin"))
+                        {
+                            @Html.Hidden("ConstructorID", item.ConstructorID)
+                            <input type="submit"
+                                   class="btn btn-default btn-xs"
+                                   value="Usuń" />
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="panel-footer">
+        @Html.ActionLink("Dodaj klocki", "Create", null,
+            new { @class = "btn btn-default" })
+        
+    </div>
+</div>

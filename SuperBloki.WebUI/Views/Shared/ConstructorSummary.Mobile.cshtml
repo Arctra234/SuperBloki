@@ -1,0 +1,23 @@
+﻿@model SuperBloki.Domain.Entities.Constructor
+
+<div data-role="collapsible" data-collapsed="false" data-content-theme="c">
+    <h2>@Model.ConstructorNumber @Model.Name @Model.Producer</h2>
+    <div>
+        <div>
+            Seria: @Model.Series
+            <br>
+            Liczba elementów: @Model.ElementsAmount
+        </div>
+        <div>
+            <strong>(@Model.Priсe.ToString("# zł"))</strong>
+        </div>
+        <div>
+            @using (Html.BeginForm("AddToCart", "Cart"))
+            {
+                @Html.HiddenFor(x => x.ConstructorID)
+                @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+                <input type="submit" class="btn btn-success" value="Do koszyka" />
+            }
+        </div>
+    </div>
+</div>

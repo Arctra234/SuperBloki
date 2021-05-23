@@ -1,0 +1,28 @@
+﻿@model SuperBloki.Domain.Entities.Constructor
+
+<div class="well">
+    @if (Model.ImageData != null)
+    {
+        <div class="pull-left" style="margin-right: 10px">
+            <img class="img-thumbnail" width="75" height="75"
+                 src="@Url.Action("GetImage", "Constructor",
+                new { Model.ConstructorID })" />
+        </div>
+    }
+
+    <h3>
+        <strong>@Model.ConstructorNumber @Model.Name @Model.Producer</strong>
+        <span class="pull-right label label-primary">@Model.Priсe.ToString("# zł")</span>
+    </h3>
+    @using (Html.BeginForm("AddToCart", "Cart"))
+    {
+        <div class="pull-right">
+            @Html.HiddenFor(x => x.ConstructorID)
+            @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+            <input type="submit" class="btn btn-success" value="Dodaj do koszyka" />
+        </div>
+    }
+    <span class="lead"> Seria: @Model.Series</span>
+    <br>
+    <span class="lead"> Liczba elementów: @Model.ElementsAmount</span>
+</div>
