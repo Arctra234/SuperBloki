@@ -46,6 +46,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
@@ -74,19 +76,73 @@
   <ItemGroup>
     <Compile Include="Abstract\IConstructorRepository.cs" />
     <Compile Include="Abstract\IOrderProcessor.cs" />
+    <Compile Include="Clients.cs">
+      <DependentUpon>ModelERd.tt</DependentUpon>
+    </Compile>
     <Compile Include="Concrete\EFConstructorRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EmailOrderProcessor.cs" />
+    <Compile Include="Constructors.cs">
+      <DependentUpon>ModelERd.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Cart.cs" />
     <Compile Include="Entities\Constructor.cs" />
     <Compile Include="Entities\ShippingDetails.cs" />
+    <Compile Include="History_orders.cs">
+      <DependentUpon>ModelERd.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelERd.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelERd.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelERd.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelERd.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelERd.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelERd.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Positions.cs">
+      <DependentUpon>ModelERd.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sysdiagrams.cs">
+      <DependentUpon>ModelERd.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Workers.cs">
+      <DependentUpon>ModelERd.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EntityDeploy Include="ModelERd.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelERd.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ModelERd.edmx.diagram">
+      <DependentUpon>ModelERd.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ModelERd.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelERd.edmx</DependentUpon>
+      <LastGenOutput>ModelERd.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ModelERd.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelERd.edmx</DependentUpon>
+      <LastGenOutput>ModelERd.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

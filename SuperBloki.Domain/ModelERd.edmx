@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SuperBlokiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="id_client" />
+          </Key>
+          <Property Name="id_client" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Constructors">
+          <Key>
+            <PropertyRef Name="ConstructorID" />
+          </Key>
+          <Property Name="ConstructorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConstructorNumber" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Series" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Producer" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ElementsAmount" Type="int" Nullable="false" />
+          <Property Name="Priсe" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="ImageData" Type="varbinary(max)" />
+          <Property Name="ImageMimeType" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SuperBloki.dbo.History_orders' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="History_orders">
+          <Key>
+            <PropertyRef Name="id_client" />
+            <PropertyRef Name="id_constructor" />
+            <PropertyRef Name="id_worker" />
+            <PropertyRef Name="date_orders" />
+          </Key>
+          <Property Name="id_client" Type="int" Nullable="false" />
+          <Property Name="id_constructor" Type="int" Nullable="false" />
+          <Property Name="id_worker" Type="int" Nullable="false" />
+          <Property Name="date_orders" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Positions">
+          <Key>
+            <PropertyRef Name="id_position" />
+          </Key>
+          <Property Name="id_position" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="position_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="position_comment" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Workers">
+          <Key>
+            <PropertyRef Name="id_worker" />
+          </Key>
+          <Property Name="id_worker" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="id_position" Type="int" Nullable="false" />
+          <Property Name="salary" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_client_gen">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="History_orders" Type="Self.History_orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="id_client" />
+            </Principal>
+            <Dependent Role="History_orders">
+              <PropertyRef Name="id_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_constructor_gen">
+          <End Role="Constructors" Type="Self.Constructors" Multiplicity="1" />
+          <End Role="History_orders" Type="Self.History_orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Constructors">
+              <PropertyRef Name="ConstructorID" />
+            </Principal>
+            <Dependent Role="History_orders">
+              <PropertyRef Name="id_constructor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_position">
+          <End Role="Positions" Type="Self.Positions" Multiplicity="1" />
+          <End Role="Workers" Type="Self.Workers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Positions">
+              <PropertyRef Name="id_position" />
+            </Principal>
+            <Dependent Role="Workers">
+              <PropertyRef Name="id_position" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_worker_gen">
+          <End Role="Workers" Type="Self.Workers" Multiplicity="1" />
+          <End Role="History_orders" Type="Self.History_orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workers">
+              <PropertyRef Name="id_worker" />
+            </Principal>
+            <Dependent Role="History_orders">
+              <PropertyRef Name="id_worker" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SuperBlokiModelStoreContainer">
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Constructors" EntityType="Self.Constructors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Positions" EntityType="Self.Positions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Workers" EntityType="Self.Workers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="History_orders" EntityType="Self.History_orders" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [History_orders].[id_client] AS [id_client], 
+    [History_orders].[id_constructor] AS [id_constructor], 
+    [History_orders].[id_worker] AS [id_worker], 
+    [History_orders].[date_orders] AS [date_orders]
+    FROM [dbo].[History_orders] AS [History_orders]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_client_gen" Association="Self.FK_client_gen">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="History_orders" EntitySet="History_orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_constructor_gen" Association="Self.FK_constructor_gen">
+            <End Role="Constructors" EntitySet="Constructors" />
+            <End Role="History_orders" EntitySet="History_orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_position" Association="Self.FK_position">
+            <End Role="Positions" EntitySet="Positions" />
+            <End Role="Workers" EntitySet="Workers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_worker_gen" Association="Self.FK_worker_gen">
+            <End Role="Workers" EntitySet="Workers" />
+            <End Role="History_orders" EntitySet="History_orders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SuperBlokiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="id_client" />
+          </Key>
+          <Property Name="id_client" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="History_orders" Relationship="Self.FK_client_gen" FromRole="Clients" ToRole="History_orders" />
+        </EntityType>
+        <EntityType Name="Constructors">
+          <Key>
+            <PropertyRef Name="ConstructorID" />
+          </Key>
+          <Property Name="ConstructorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConstructorNumber" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Series" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Producer" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ElementsAmount" Type="Int32" Nullable="false" />
+          <Property Name="Priсe" Type="Decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ImageMimeType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="History_orders" Relationship="Self.FK_constructor_gen" FromRole="Constructors" ToRole="History_orders" />
+        </EntityType>
+        <EntityType Name="Positions">
+          <Key>
+            <PropertyRef Name="id_position" />
+          </Key>
+          <Property Name="id_position" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="position_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="position_comment" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Workers" Relationship="Self.FK_position" FromRole="Positions" ToRole="Workers" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Workers">
+          <Key>
+            <PropertyRef Name="id_worker" />
+          </Key>
+          <Property Name="id_worker" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="id_position" Type="Int32" Nullable="false" />
+          <Property Name="salary" Type="Decimal" Precision="16" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Positions" Relationship="Self.FK_position" FromRole="Workers" ToRole="Positions" />
+          <NavigationProperty Name="History_orders" Relationship="Self.FK_worker_gen" FromRole="Workers" ToRole="History_orders" />
+        </EntityType>
+        <EntityType Name="History_orders">
+          <Key>
+            <PropertyRef Name="id_client" />
+            <PropertyRef Name="id_constructor" />
+            <PropertyRef Name="id_worker" />
+            <PropertyRef Name="date_orders" />
+          </Key>
+          <Property Name="id_client" Type="Int32" Nullable="false" />
+          <Property Name="id_constructor" Type="Int32" Nullable="false" />
+          <Property Name="id_worker" Type="Int32" Nullable="false" />
+          <Property Name="date_orders" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK_client_gen" FromRole="History_orders" ToRole="Clients" />
+          <NavigationProperty Name="Constructors" Relationship="Self.FK_constructor_gen" FromRole="History_orders" ToRole="Constructors" />
+          <NavigationProperty Name="Workers" Relationship="Self.FK_worker_gen" FromRole="History_orders" ToRole="Workers" />
+        </EntityType>
+        <Association Name="FK_client_gen">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="History_orders" Type="Self.History_orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="id_client" />
+            </Principal>
+            <Dependent Role="History_orders">
+              <PropertyRef Name="id_client" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_constructor_gen">
+          <End Role="Constructors" Type="Self.Constructors" Multiplicity="1" />
+          <End Role="History_orders" Type="Self.History_orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Constructors">
+              <PropertyRef Name="ConstructorID" />
+            </Principal>
+            <Dependent Role="History_orders">
+              <PropertyRef Name="id_constructor" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_position">
+          <End Role="Positions" Type="Self.Positions" Multiplicity="1" />
+          <End Role="Workers" Type="Self.Workers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Positions">
+              <PropertyRef Name="id_position" />
+            </Principal>
+            <Dependent Role="Workers">
+              <PropertyRef Name="id_position" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_worker_gen">
+          <End Role="Workers" Type="Self.Workers" Multiplicity="1" />
+          <End Role="History_orders" Type="Self.History_orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Workers">
+              <PropertyRef Name="id_worker" />
+            </Principal>
+            <Dependent Role="History_orders">
+              <PropertyRef Name="id_worker" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SuperBlokiEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Self.Clients" />
+          <EntitySet Name="Constructors" EntityType="Self.Constructors" />
+          <EntitySet Name="Positions" EntityType="Self.Positions" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Workers" EntityType="Self.Workers" />
+          <EntitySet Name="History_orders" EntityType="Self.History_orders" />
+          <AssociationSet Name="FK_client_gen" Association="Self.FK_client_gen">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="History_orders" EntitySet="History_orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_constructor_gen" Association="Self.FK_constructor_gen">
+            <End Role="Constructors" EntitySet="Constructors" />
+            <End Role="History_orders" EntitySet="History_orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_position" Association="Self.FK_position">
+            <End Role="Positions" EntitySet="Positions" />
+            <End Role="Workers" EntitySet="Workers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_worker_gen" Association="Self.FK_worker_gen">
+            <End Role="Workers" EntitySet="Workers" />
+            <End Role="History_orders" EntitySet="History_orders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SuperBlokiModelStoreContainer" CdmEntityContainer="SuperBlokiEntities">
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="SuperBlokiModel.Clients">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="id_client" ColumnName="id_client" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Constructors">
+            <EntityTypeMapping TypeName="SuperBlokiModel.Constructors">
+              <MappingFragment StoreEntitySet="Constructors">
+                <ScalarProperty Name="ConstructorID" ColumnName="ConstructorID" />
+                <ScalarProperty Name="ConstructorNumber" ColumnName="ConstructorNumber" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Series" ColumnName="Series" />
+                <ScalarProperty Name="Producer" ColumnName="Producer" />
+                <ScalarProperty Name="ElementsAmount" ColumnName="ElementsAmount" />
+                <ScalarProperty Name="Priсe" ColumnName="Priсe" />
+                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+                <ScalarProperty Name="ImageMimeType" ColumnName="ImageMimeType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Positions">
+            <EntityTypeMapping TypeName="SuperBlokiModel.Positions">
+              <MappingFragment StoreEntitySet="Positions">
+                <ScalarProperty Name="id_position" ColumnName="id_position" />
+                <ScalarProperty Name="position_name" ColumnName="position_name" />
+                <ScalarProperty Name="position_comment" ColumnName="position_comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SuperBlokiModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Workers">
+            <EntityTypeMapping TypeName="SuperBlokiModel.Workers">
+              <MappingFragment StoreEntitySet="Workers">
+                <ScalarProperty Name="id_worker" ColumnName="id_worker" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="id_position" ColumnName="id_position" />
+                <ScalarProperty Name="salary" ColumnName="salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="History_orders">
+            <EntityTypeMapping TypeName="SuperBlokiModel.History_orders">
+              <MappingFragment StoreEntitySet="History_orders">
+                <ScalarProperty Name="id_client" ColumnName="id_client" />
+                <ScalarProperty Name="id_constructor" ColumnName="id_constructor" />
+                <ScalarProperty Name="id_worker" ColumnName="id_worker" />
+                <ScalarProperty Name="date_orders" ColumnName="date_orders" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
